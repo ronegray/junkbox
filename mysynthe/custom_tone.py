@@ -60,6 +60,22 @@ class CustomTone:
         self._entity.mode = mode if mode is not None else self._mode
         self._entity.gain = gain if gain is not None else self._gain
         self._entity.sample_bits = sample_bits if sample_bits is not None else self._sample_bits
+    
+    def get_parameter(self,
+                      param_name: str | None = None
+                      ) -> dict[str, Tone | int | float | list] | Tone | int | float | list | None:
+        '''内包Toneオブジェクトとそのパラメータの取得\n指示子はプロパティ名'''
+        param: dict[str, Tone | int | float | list] = {}
+        param["tone"] = self._entity
+        vars = [var for var in self._entity.__dir__() if not var.startswith("_")]
+        for var in vars:
+            if var == "wavetable":
+                param[var] = self._entity.wavetable.to_list() # type: ignore
+            elif var == "waveform":
+                pass
+            else:
+                param[var] = getattr(self._entity,var)
+        return param.get(param_name, None) if param_name else param
 
     def update_wavetable(self, waveform_volumes: list[int]):
         '''波形データを変更'''

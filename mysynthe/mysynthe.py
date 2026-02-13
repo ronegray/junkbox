@@ -4,9 +4,6 @@ import custom_tone
 # 音色編集中に鳴らす楽譜のサンプル（１ｃｈ分のみ）
 MMLSTAT: str = "@0" # tone0に対して設定している為音色番号は0必須
 MMLCODE: str = "cdefgab>c"
-# MMLSTAT: str = "T132 @0 Q99 O2 L16"
-# MMLCODE: str = "[[drdd]4 [frff]2 [grgg]2]2 [a#ra#a#]4 [araa]8"
-
 
 # ADSR編集用オブジェクト(4つ生成)
 class Knob:
@@ -170,7 +167,7 @@ class App:
         }
 
         # 標準トーン0番を書き換え（14_synthesizer.pyに倣って4ch以上に拡張してもOK）
-        px.tones[0] = self.custom_tone._entity
+        px.tones[0] = self.custom_tone.get_parameter("tone") # type: ignore
 
         # 編集中フラグの初期値定義
         self.is_editing_wavetable: bool = False
